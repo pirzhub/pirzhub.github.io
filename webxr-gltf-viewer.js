@@ -7,25 +7,34 @@ let scene, camera, renderer, controller, reticle;
 init();
 
 function init() {
+    // Set up the renderer
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.xr.enabled = true;
     document.body.appendChild(renderer.domElement);
-    document.body.appendChild(ARButton.createButton(renderer));
 
+    // Add AR button to start the AR session
+    document.body.appendChild(ARButton.createButton(renderer, { requiredFeatures: ['hit-test'] }));
+
+    // Set up the scene and camera
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 20);
     scene.add(camera);
 
+    // Add hemisphere light for better lighting
     const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
     scene.add(light);
 
+    // Set up the controller
     controller = renderer.xr.getController(0);
     controller.addEventListener('select', onSelect);
     scene.add(controller);
 
+    // Create the reticle and file input
     createReticle();
     createFileInput();
+
+    // Start the animation loop
     animate();
 }
 
@@ -79,7 +88,7 @@ function animate() {
     renderer.setAnimationLoop(() => {
         if (renderer.xr.isPresenting) {
             const session = renderer.xr.getSession();
-            session.requestReferenceSpace('local').then((space) => {
+            session.requestReferenceSpace('viewer').then((space) => {
                 session.requestHitTestSource({ space }).then((hitTestSource) => {
                     const frame = renderer.xr.getFrame();
                     if (frame) {
