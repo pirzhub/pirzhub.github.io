@@ -3,9 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebXR glTF Viewer</title>
-    <script type="module" src="webxr-gltf-viewer.js"></script>
+    <title>WebXR GLTF Viewer</title>
+    <style>
+        body { margin: 0; }
+        canvas { display: block; }
+    </style>
 </head>
 <body>
+    <!-- Include Three.js and the WebXR polyfill (optional) -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.146/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.146/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.146/examples/js/webxr/ARButton.js"></script>
+
+    <!-- Include your main JavaScript file -->
+    <script type="module" src="webxr-gltf-viewer.js"></script>
 </body>
 </html>
